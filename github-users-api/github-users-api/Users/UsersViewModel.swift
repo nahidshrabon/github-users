@@ -16,11 +16,14 @@ protocol UsersDelegate {
 
 final class UsersViewModel {
     private var users: [User]
+    private var filteredUsers: [User]
     private var downloadService: UsersDownloadService
     private var delegate: UsersDelegate
     
     init(downloadService: UsersDownloadService, delegate: UsersDelegate) {
         users = []
+        filteredUsers = []
+        
         self.downloadService = downloadService
         self.delegate = delegate
         
@@ -43,5 +46,14 @@ final class UsersViewModel {
 extension UsersViewModel {
     var numberOfRows: Int { users.count }
     
+    var numberOfSearchResultRows: Int { filteredUsers.count }
+    
     func cellData(for index: Int) -> User { users[index] }
+    
+    func cellDataSearchResult(for index: Int) -> User { filteredUsers[index] }
+    
+    func makeSearchResult(for text: String) {
+        filteredUsers = users.filter { $0.login?.hasPrefix(text.lowercased()) ?? false}
+        delegate.reloadUsers()
+    }
 }
