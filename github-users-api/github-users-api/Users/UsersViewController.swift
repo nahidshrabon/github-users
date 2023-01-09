@@ -46,6 +46,11 @@ extension UsersViewController {
 
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let nextViewController = ProfileViewController.makeViewController()
+        navigationController?.pushViewController(nextViewController, animated: true)
+    }
 }
 
 extension UsersViewController: UsersDelegate {
