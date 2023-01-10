@@ -29,7 +29,7 @@ enum DownloadURL {
     }
 }
 
-final class APIService: UsersDownloadService {
+final class APIService: UsersDownloadService, ProfileDownloadService {
     static let shared = APIService()
     
     var imageCache: [String: UIImage] = [:]
@@ -61,6 +61,29 @@ final class APIService: UsersDownloadService {
             
             print("Users data downloaded!")
             completion(decodedUserList, nil)
+        }.resume()
+    }
+    
+    func downloadProfile(username: String, completion: @escaping (Profile?, ServiceError?) -> Void) {
+        guard let url = DownloadURL.profieURL(username).url else { return }
+        
+        let urlRequest = URLRequest(url: url)
+        
+        urlSession.dataTask(with: urlRequest) { data, _, error in
+            guard let data else {
+                completion(nil, .networkError)
+                return
+            }
+            
+            guard
+                let decodedProfile = try? JSONDecoder().decode(Profile.self, from: data)
+            else {
+                completion(nil, .serverError)
+                return
+            }
+            
+            print("Profile data downloaded!")
+            completion(decodedProfile, nil)
         }.resume()
     }
     

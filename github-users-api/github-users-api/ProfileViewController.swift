@@ -8,9 +8,13 @@
 import UIKit
 
 final class ProfileViewController: UIViewController {
-    static func makeViewController() -> UIViewController {
-        return ProfileViewController()
+    static func makeViewController(for user: User) -> UIViewController {
+        let viewController = ProfileViewController()
+        viewController.viewModel = ProfileViewModel(user: user, downloadService: APIService.shared)
+        return viewController
     }
+    
+    private var viewModel: ProfileViewModel?
     
     lazy var profileImageView: UIImageView = {
         var imageView = UIImageView()
@@ -29,12 +33,15 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
-        navigationItem.title = "username"
+        navigationItem.title = viewModel?.navigationTitle
         
-        setupViews()
+        setupInitialViews()
+        
+        viewModel?.delegate = self
+        viewModel?.prepareProfile()
     }
     
-    private func setupViews() {
+    private func setupInitialViews() {
         setupProfileImageView()
         setupProfileInfoView()
     }
@@ -54,6 +61,19 @@ final class ProfileViewController: UIViewController {
     }
     
     private func setupProfileInfoView() {
+        view.addSubview(profileInfoStackView)
+        profileInfoStackView.translatesAutoresizingMaskIntoConstraints = false
         
+        NSLayoutConstraint.activate([
+            profileInfoStackView.topAnchor.constraint(equalTo: profileImageView.bottomAnchor),
+            profileInfoStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            profileInfoStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+}
+
+extension ProfileViewController: ProfileDelegate {
+    func reloadProfile() {
+        print("profile reloaded")
     }
 }

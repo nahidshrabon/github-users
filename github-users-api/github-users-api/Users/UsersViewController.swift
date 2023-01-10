@@ -48,7 +48,13 @@ extension UsersViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let nextViewController = ProfileViewController.makeViewController()
+        let cellData = isSearching
+        ? viewModel?.cellDataSearchResult(for: indexPath.row)
+        : viewModel?.cellData(for: indexPath.row)
+        
+        guard let user = cellData else { return }
+        
+        let nextViewController = ProfileViewController.makeViewController(for: user)
         navigationController?.pushViewController(nextViewController, animated: true)
     }
 }
