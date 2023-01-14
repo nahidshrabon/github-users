@@ -25,11 +25,6 @@ class UserCell: UITableViewCell {
         guard let url = avatarURL else { return }
         
         APIService.shared.downloadImage(for: url) { [weak self] responseURL, image in
-            guard
-                let cellURL = self?.avatarURL,
-                cellURL == responseURL
-            else { return }
-            
             DispatchQueue.main.async {
                 self?.avatar.image = image
             }

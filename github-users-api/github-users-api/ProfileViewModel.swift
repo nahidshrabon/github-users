@@ -5,12 +5,15 @@
 //  Created by Md. Nahidul Islam on 11/1/23.
 //
 
+import UIKit
+
 protocol ProfileDownloadService {
     func downloadProfile(username: String, completion: @escaping (Profile?, ServiceError?) -> Void)
 }
 
 protocol ProfileDelegate {
-    func reloadProfile()
+    func reloadProfileImage(with: UIImage?)
+    func reloadProfileInfo()
 }
 
 final class ProfileViewModel {
@@ -31,16 +34,22 @@ extension ProfileViewModel {
     var navigationTitle: String? { user.login }
     
     func prepareProfile() {
-        guard let username = user.login else { return }
-        
-        downloadService.downloadProfile(username: username) { [weak self] profile, error in
-            if let error {
-                print(error)
-                return
+        if let avatarURL = user.avatar_url {
+            downloadService.downloadImage(for: avatarURL) { [weak self] responseURL, image in
+                self?.delegate?.reloadProfileImage(with: image)
             }
-            
-            self?.profile = profile
-            self?.delegate?.reloadProfile()
+        }
+        
+        if let username = user.login {
+            downloadService.downloadProfile(username: username) { [weak self] profile, error in
+                if let error {
+                    print(error)
+                    return
+                }
+                
+                self?.profile = profile
+                self?.delegate?.reloadProfileInfo()
+            }
         }
     }
 }

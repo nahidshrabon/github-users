@@ -18,6 +18,7 @@ final class ProfileViewController: UIViewController {
     
     lazy var profileImageView: UIImageView = {
         var imageView = UIImageView()
+        imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 10
         return imageView
     }()
@@ -51,7 +52,7 @@ final class ProfileViewController: UIViewController {
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            profileImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            profileImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
             profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             profileImageView.heightAnchor.constraint(equalToConstant: 200),
             profileImageView.widthAnchor.constraint(equalToConstant: 200)
@@ -73,7 +74,13 @@ final class ProfileViewController: UIViewController {
 }
 
 extension ProfileViewController: ProfileDelegate {
-    func reloadProfile() {
+    func reloadProfileImage(with image: UIImage?) {
+        DispatchQueue.main.async { [weak self] in
+            self?.profileImageView.image = image
+        }
+    }
+    
+    func reloadProfileInfo() {
         print("profile reloaded")
     }
 }
