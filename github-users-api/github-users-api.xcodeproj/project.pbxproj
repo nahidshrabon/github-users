@@ -74,15 +74,23 @@
 				6D7A8DF9296898D700D303B1 /* SceneDelegate.swift */,
 				6DFD93F82969F15D00F8D939 /* APIService.swift */,
 				6DFD93F72969E8D900F8D939 /* Users */,
-				6DB97110296CA057008C783C /* ProfileViewController.swift */,
-				6D4878BC296DF60F007D0EF7 /* ProfileViewModel.swift */,
-				6D4878BE296E059F007D0EF7 /* ProfileModel.swift */,
+				6D80216E2975F3D300349252 /* Profile */,
 				6D7A8DFD296898D700D303B1 /* Main.storyboard */,
 				6D7A8E00296898DC00D303B1 /* Assets.xcassets */,
 				6D7A8E02296898DC00D303B1 /* LaunchScreen.storyboard */,
 				6D7A8E05296898DC00D303B1 /* Info.plist */,
 			);
 			path = "github-users-api";
+			sourceTree = "<group>";
+		};
+		6D80216E2975F3D300349252 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				6D4878BE296E059F007D0EF7 /* ProfileModel.swift */,
+				6D4878BC296DF60F007D0EF7 /* ProfileViewModel.swift */,
+				6DB97110296CA057008C783C /* ProfileViewController.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		6DFD93F72969E8D900F8D939 /* Users */ = {

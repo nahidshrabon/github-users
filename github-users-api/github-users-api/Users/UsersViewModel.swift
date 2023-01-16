@@ -12,6 +12,7 @@ protocol UsersDownloadService {
 
 protocol UsersDelegate {
     func reloadUsers()
+    func showError(for: ServiceError)
 }
 
 final class UsersViewModel {
@@ -26,11 +27,9 @@ final class UsersViewModel {
         
         self.downloadService = downloadService
         self.delegate = delegate
-        
-        fetchUsersData()
     }
     
-    private func fetchUsersData() {
+    func prepareUsers() {
         downloadService.downloadUsers { [weak self] users, error in
             guard let error else {
                 self?.users = users
@@ -38,7 +37,7 @@ final class UsersViewModel {
                 return
             }
             
-            print(error)
+            self?.delegate.showError(for: error)
         }
     }
 }

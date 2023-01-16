@@ -14,14 +14,14 @@ protocol ProfileDownloadService {
 protocol ProfileDelegate {
     func reloadProfileImage(with: UIImage?)
     func reloadProfileInfo()
+    func showError(for: ServiceError)
 }
 
 final class ProfileViewModel {
-    private var user: User
-    private var downloadService: APIService
+    private let user: User
+    private let downloadService: APIService
     
     private var profile: Profile?
-    
     var delegate: ProfileDelegate?
     
     init(user: User, downloadService: APIService) {
@@ -33,6 +33,18 @@ final class ProfileViewModel {
 extension ProfileViewModel {
     var navigationTitle: String? { user.login }
     
+    var name: String? { profile?.name }
+    
+    var company: String? { profile?.company }
+    
+    var location: String? { profile?.location }
+    
+    var followers: Int? { profile?.followers }
+    
+    var following: Int? { profile?.following }
+    
+    var public_repos: Int? { profile?.public_repos }
+    
     func prepareProfile() {
         if let avatarURL = user.avatar_url {
             downloadService.downloadImage(for: avatarURL) { [weak self] responseURL, image in
@@ -43,7 +55,7 @@ extension ProfileViewModel {
         if let username = user.login {
             downloadService.downloadProfile(username: username) { [weak self] profile, error in
                 if let error {
-                    print(error)
+                    self?.delegate?.showError(for: error)
                     return
                 }
                 

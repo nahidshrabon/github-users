@@ -8,7 +8,22 @@
 import UIKit
 
 final class UsersViewController: UITableViewController {
-    @IBOutlet weak private var searchBar: UISearchBar!
+    @IBOutlet weak var searchBar: UISearchBar!
+    
+    private lazy var loadingView: UIActivityIndicatorView = {
+        let indicatorView = UIActivityIndicatorView(style: .large)
+        
+        view.addSubview(indicatorView)
+        indicatorView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            indicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            indicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+        
+        return indicatorView
+    }()
+    
     private var viewModel: UsersViewModel?
     private var isSearching = false
     
@@ -22,6 +37,9 @@ final class UsersViewController: UITableViewController {
             downloadService: APIService.shared,
             delegate: self
         )
+        
+        loadingView.startAnimating()
+        viewModel?.prepareUsers()
     }
 }
 
@@ -63,7 +81,48 @@ extension UsersViewController: UsersDelegate {
     func reloadUsers() {
         DispatchQueue.main.async { [weak self] in
             self?.tableView.reloadData()
+            self?.loadingView.stopAnimating()
         }
+    }
+    
+    func showError(for error: ServiceError) {
+        DispatchQueue.main.async { [weak self] in
+            self?.showErrorAlert(for: error)
+        }
+    }
+    
+    private func showErrorAlert(for error: ServiceError) {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
+        
+        alert.addAction(
+            .init(
+                title: "Cancel",
+                style: .cancel,
+                handler: { [weak self] _ in
+                    self?.loadingView.stopAnimating()
+                }
+            )
+        )
+        
+        alert.addAction(
+            .init(
+                title: "Retry",
+                style: .default,
+                handler: { [weak self] _ in
+                    self?.viewModel?.prepareUsers()
+                }
+            )
+        )
+        
+        switch error {
+        case .networkError:
+            alert.title = "No Network Connection!"
+            
+        case .serverError:
+            alert.title = "Server Error!"
+        }
+        
+        present(alert, animated: true)
     }
 }
 
