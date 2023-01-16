@@ -14,6 +14,7 @@
 		6D7A8DFF296898D700D303B1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6D7A8DFD296898D700D303B1 /* Main.storyboard */; };
 		6D7A8E01296898DC00D303B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6D7A8E00296898DC00D303B1 /* Assets.xcassets */; };
 		6D7A8E04296898DC00D303B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6D7A8E02296898DC00D303B1 /* LaunchScreen.storyboard */; };
+		6D80217D2975F8CF00349252 /* UsersViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D80217C2975F8CF00349252 /* UsersViewModelTests.swift */; };
 		6DB97111296CA057008C783C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB97110296CA057008C783C /* ProfileViewController.swift */; };
 		6DE2F3A62968A17100E93D67 /* UsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE2F3A52968A17100E93D67 /* UsersViewController.swift */; };
 		6DE2F3AA2968A61900E93D67 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE2F3A92968A61900E93D67 /* UserCell.swift */; };
@@ -21,6 +22,16 @@
 		6DFD93F62969E7E100F8D939 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFD93F52969E7E100F8D939 /* UserModel.swift */; };
 		6DFD93F92969F15D00F8D939 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFD93F82969F15D00F8D939 /* APIService.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6D8021772975F87B00349252 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6D7A8DEC296898D700D303B1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6D7A8DF3296898D700D303B1;
+			remoteInfo = "github-users-api";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		6D4878BC296DF60F007D0EF7 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
@@ -32,6 +43,8 @@
 		6D7A8E00296898DC00D303B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6D7A8E03296898DC00D303B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6D7A8E05296898DC00D303B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6D8021732975F87B00349252 /* github-users-apiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "github-users-apiTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6D80217C2975F8CF00349252 /* UsersViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersViewModelTests.swift; sourceTree = "<group>"; };
 		6DB97110296CA057008C783C /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		6DE2F3A52968A17100E93D67 /* UsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersViewController.swift; sourceTree = "<group>"; };
 		6DE2F3A92968A61900E93D67 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
@@ -48,6 +61,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6D8021702975F87B00349252 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -55,6 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				6D7A8DF6296898D700D303B1 /* github-users-api */,
+				6D8021742975F87B00349252 /* github-users-apiTests */,
 				6D7A8DF5296898D700D303B1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -63,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				6D7A8DF4296898D700D303B1 /* github-users-api.app */,
+				6D8021732975F87B00349252 /* github-users-apiTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -91,6 +113,14 @@
 				6DB97110296CA057008C783C /* ProfileViewController.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		6D8021742975F87B00349252 /* github-users-apiTests */ = {
+			isa = PBXGroup;
+			children = (
+				6D80217C2975F8CF00349252 /* UsersViewModelTests.swift */,
+			);
+			path = "github-users-apiTests";
 			sourceTree = "<group>";
 		};
 		6DFD93F72969E8D900F8D939 /* Users */ = {
@@ -124,6 +154,24 @@
 			productReference = 6D7A8DF4296898D700D303B1 /* github-users-api.app */;
 			productType = "com.apple.product-type.application";
 		};
+		6D8021722975F87B00349252 /* github-users-apiTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6D8021792975F87B00349252 /* Build configuration list for PBXNativeTarget "github-users-apiTests" */;
+			buildPhases = (
+				6D80216F2975F87B00349252 /* Sources */,
+				6D8021702975F87B00349252 /* Frameworks */,
+				6D8021712975F87B00349252 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6D8021782975F87B00349252 /* PBXTargetDependency */,
+			);
+			name = "github-users-apiTests";
+			productName = "github-users-apiTests";
+			productReference = 6D8021732975F87B00349252 /* github-users-apiTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -136,6 +184,11 @@
 				TargetAttributes = {
 					6D7A8DF3296898D700D303B1 = {
 						CreatedOnToolsVersion = 14.1;
+					};
+					6D8021722975F87B00349252 = {
+						CreatedOnToolsVersion = 14.1;
+						LastSwiftMigration = 1410;
+						TestTargetID = 6D7A8DF3296898D700D303B1;
 					};
 				};
 			};
@@ -153,6 +206,7 @@
 			projectRoot = "";
 			targets = (
 				6D7A8DF3296898D700D303B1 /* github-users-api */,
+				6D8021722975F87B00349252 /* github-users-apiTests */,
 			);
 		};
 /* End PBXProject section */
@@ -165,6 +219,13 @@
 				6D7A8E04296898DC00D303B1 /* LaunchScreen.storyboard in Resources */,
 				6D7A8E01296898DC00D303B1 /* Assets.xcassets in Resources */,
 				6D7A8DFF296898D700D303B1 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6D8021712975F87B00349252 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -188,7 +249,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6D80216F2975F87B00349252 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6D80217D2975F8CF00349252 /* UsersViewModelTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6D8021782975F87B00349252 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6D7A8DF3296898D700D303B1 /* github-users-api */;
+			targetProxy = 6D8021772975F87B00349252 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		6D7A8DFD296898D700D303B1 /* Main.storyboard */ = {
@@ -382,6 +459,55 @@
 			};
 			name = Release;
 		};
+		6D80217A2975F87B00349252 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 338Q9978G6;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "nahidul.github-users-apiTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/github-users-api.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/github-users-api";
+			};
+			name = Debug;
+		};
+		6D80217B2975F87B00349252 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 338Q9978G6;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "nahidul.github-users-apiTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/github-users-api.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/github-users-api";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -399,6 +525,15 @@
 			buildConfigurations = (
 				6D7A8E09296898DC00D303B1 /* Debug */,
 				6D7A8E0A296898DC00D303B1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6D8021792975F87B00349252 /* Build configuration list for PBXNativeTarget "github-users-apiTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6D80217A2975F87B00349252 /* Debug */,
+				6D80217B2975F87B00349252 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
