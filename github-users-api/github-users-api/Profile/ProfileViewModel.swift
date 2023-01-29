@@ -9,6 +9,7 @@ import UIKit
 
 protocol ProfileDownloadService {
     func downloadProfile(username: String, completion: @escaping (Profile?, ServiceError?) -> Void)
+    func downloadImage(for rawURL: String, completion: @escaping (String, UIImage) -> Void)
 }
 
 protocol ProfileDelegate {
@@ -19,12 +20,12 @@ protocol ProfileDelegate {
 
 final class ProfileViewModel {
     private let user: User
-    private let downloadService: APIService
+    private let downloadService: ProfileDownloadService
     
     private var profile: Profile?
     var delegate: ProfileDelegate?
     
-    init(user: User, downloadService: APIService) {
+    init(user: User, downloadService: ProfileDownloadService) {
         self.user = user
         self.downloadService = downloadService
     }
