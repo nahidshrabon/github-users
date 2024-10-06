@@ -38,8 +38,12 @@ final class UsersViewController: UITableViewController {
             delegate: self
         )
         
+        prepateData()
+    }
+    
+    private func prepateData() {
         loadingView.startAnimating()
-        viewModel?.prepareUsers()
+        Task { await viewModel?.prepareUsers() }
     }
 }
 
@@ -87,6 +91,7 @@ extension UsersViewController: UsersDelegate {
     
     func showError(for error: ServiceError) {
         DispatchQueue.main.async { [weak self] in
+            self?.loadingView.stopAnimating()
             self?.showErrorAlert(for: error)
         }
     }
@@ -97,10 +102,7 @@ extension UsersViewController: UsersDelegate {
         alert.addAction(
             .init(
                 title: "Cancel",
-                style: .cancel,
-                handler: { [weak self] _ in
-                    self?.loadingView.stopAnimating()
-                }
+                style: .cancel
             )
         )
         
@@ -108,13 +110,14 @@ extension UsersViewController: UsersDelegate {
             .init(
                 title: "Retry",
                 style: .default,
-                handler: { [weak self] _ in
-                    self?.viewModel?.prepareUsers()
-                }
+                handler: { [weak self] _ in self?.prepateData() }
             )
         )
         
         switch error {
+        case .invalidURL:
+            alert.title = "Invalid URL!"
+            
         case .networkError:
             alert.title = "No Network Connection!"
             

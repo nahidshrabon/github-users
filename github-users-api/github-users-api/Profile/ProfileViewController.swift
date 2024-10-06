@@ -72,10 +72,14 @@ final class ProfileViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         navigationItem.title = viewModel?.navigationTitle
-        loadingView.startAnimating()
-        
         viewModel?.delegate = self
-        viewModel?.prepareProfile()
+        
+        prepareData()
+    }
+    
+    private func prepareData() {
+        loadingView.startAnimating()
+        Task { await viewModel?.prepareProfile() }
     }
 }
 
@@ -99,6 +103,7 @@ extension ProfileViewController: ProfileDelegate {
     
     func showError(for error: ServiceError) {
         DispatchQueue.main.async { [weak self] in
+            self?.loadingView.stopAnimating()
             self?.showErrorAlert(for: error)
         }
     }
@@ -212,10 +217,7 @@ private extension ProfileViewController {
         alert.addAction(
             .init(
                 title: "Cancel",
-                style: .cancel,
-                handler: { [weak self] _ in
-                    self?.loadingView.stopAnimating()
-                }
+                style: .cancel
             )
         )
         
@@ -223,13 +225,14 @@ private extension ProfileViewController {
             .init(
                 title: "Retry",
                 style: .default,
-                handler: { [weak self] _ in
-                    self?.viewModel?.prepareProfile()
-                }
+                handler: { [weak self] _ in self?.prepareData() }
             )
         )
         
         switch error {
+        case .invalidURL:
+            alert.message = "Invalid URL!"
+            
         case .networkError:
             alert.title = "No Network Connection!"
             

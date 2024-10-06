@@ -17,50 +17,50 @@ final class UsersViewModelTests: XCTestCase {
         super.tearDown()
     }
     
-    func testPrepareUsers() {
+    func testPrepareUsers() async {
         viewModelUnderTest = UsersViewModel(
             downloadService: UsersMockDownloadService(),
             delegate: UsersMockDelegate()
         )
         
-        viewModelUnderTest.prepareUsers()
+        await viewModelUnderTest.prepareUsers()
         
         XCTAssertEqual(viewModelUnderTest.numberOfRows, dataset.users.count)
         XCTAssertEqual(viewModelUnderTest.cellData(for: 0), dataset.user1)
         XCTAssertEqual(viewModelUnderTest.cellData(for: 1), dataset.user2)
     }
     
-    func testPrepareUsersWithError() {
+    func testPrepareUsersWithError() async {
         viewModelUnderTest = UsersViewModel(
             downloadService: UsersMockDownloadService(testError: .networkError),
             delegate: UsersMockDelegate()
         )
         
-        viewModelUnderTest.prepareUsers()
+        await viewModelUnderTest.prepareUsers()
         
         XCTAssertEqual(viewModelUnderTest.numberOfRows, 0)
     }
     
-    func testMakeSearchResult() {
+    func testMakeSearchResult() async {
         viewModelUnderTest = UsersViewModel(
             downloadService: UsersMockDownloadService(),
             delegate: UsersMockDelegate()
         )
         
-        viewModelUnderTest.prepareUsers()
+        await viewModelUnderTest.prepareUsers()
         viewModelUnderTest.makeSearchResult(for: "login2")
         
         XCTAssertEqual(viewModelUnderTest.numberOfSearchResultRows, 1)
         XCTAssertEqual(viewModelUnderTest.cellDataSearchResult(for: 0), dataset.user2)
     }
     
-    func testmMakeSearchResultForUnknownUser() {
+    func testmMakeSearchResultForUnknownUser() async {
         viewModelUnderTest = UsersViewModel(
             downloadService: UsersMockDownloadService(),
             delegate: UsersMockDelegate()
         )
         
-        viewModelUnderTest.prepareUsers()
+        await viewModelUnderTest.prepareUsers()
         viewModelUnderTest.makeSearchResult(for: "unknown")
         
         XCTAssertEqual(viewModelUnderTest.numberOfSearchResultRows, 0)
@@ -76,13 +76,9 @@ final class UsersMockDownloadService: UsersDownloadService {
         dataset = UsersViewModelMockDataset()
     }
     
-    func downloadUsers(completion: @escaping ([User], ServiceError?) -> Void) {
-        switch testError {
-        case .none:
-            completion(dataset.users, nil)
-        default:
-            completion([], testError)
-        }
+    func downloadUsers() async throws -> [User] {
+        guard let testError else { return dataset.users }
+        throw testError
     }
 }
 

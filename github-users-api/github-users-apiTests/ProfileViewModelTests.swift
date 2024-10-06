@@ -17,13 +17,13 @@ final class ProfileViewModelTests: XCTestCase {
         super.tearDown()
     }
     
-    func testPrepareProfile() {
+    func testPrepareProfile() async {
         viewModelUnderTest = .init(
             user: dataset.user,
             downloadService: ProfileMockDownloadService()
         )
         
-        viewModelUnderTest.prepareProfile()
+        await viewModelUnderTest.prepareProfile()
         
         XCTAssertEqual(viewModelUnderTest.navigationTitle, dataset.login)
         XCTAssertEqual(viewModelUnderTest.name, dataset.name)
@@ -34,13 +34,13 @@ final class ProfileViewModelTests: XCTestCase {
         XCTAssertEqual(viewModelUnderTest.following, dataset.following)
     }
     
-    func testPrepareProfileWithError() {
+    func testPrepareProfileWithError() async {
         viewModelUnderTest = .init(
             user: dataset.user,
             downloadService: ProfileMockDownloadService(testError: .networkError)
         )
         
-        viewModelUnderTest.prepareProfile()
+        await viewModelUnderTest.prepareProfile()
         
         XCTAssertEqual(viewModelUnderTest.navigationTitle, dataset.login)
         XCTAssertNil(viewModelUnderTest.name)
@@ -61,13 +61,9 @@ final class ProfileMockDownloadService: ProfileDownloadService {
         dataset = ProfileViewModelMockDataset()
     }
     
-    func downloadProfile(username: String, completion: @escaping (Profile?, ServiceError?) -> Void) {
-        switch testError {
-        case .none:
-            completion(dataset.profile, nil)
-        default:
-            completion(nil, testError)
-        }
+    func downloadProfile(username: String) async -> Result<Profile?, ServiceError> {
+        guard let testError else { return .success(dataset.profile) }
+        return .failure(testError)
     }
     
     func downloadImage(for rawURL: String, completion: @escaping (String, UIImage) -> Void) {

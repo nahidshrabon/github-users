@@ -8,7 +8,8 @@
 import Foundation
 import UIKit
 
-enum ServiceError {
+enum ServiceError: Error {
+    case invalidURL
     case networkError
     case serverError
 }
@@ -37,34 +38,35 @@ final class APIService: UsersDownloadService, ProfileDownloadService {
     lazy var urlSession: URLSession = {
         let sessionConfiguration = URLSessionConfiguration.default
         sessionConfiguration.waitsForConnectivity = true
-        sessionConfiguration.timeoutIntervalForResource = 30
+        sessionConfiguration.timeoutIntervalForResource = 10
         return URLSession(configuration: sessionConfiguration)
     }()
     
-    func downloadUsers(completion: @escaping ([User], ServiceError?) -> Void) {
-        guard let url = DownloadURL.usersURL.url else { return }
+    func downloadUsers() async throws -> [User] {
+        guard let url = DownloadURL.usersURL.url else { throw ServiceError.invalidURL }
+        let (data, _) = try await urlSession.data(for: .init(url: url))
         
-        let urlRequest = URLRequest(url: url)
+        guard
+            let decodedUserList = try? JSONDecoder().decode([User].self, from: data)
+        else { throw ServiceError.serverError }
         
-        urlSession.dataTask(with: urlRequest) { data, _, error in
-            guard let data else {
-                completion([], .networkError)
-                return
-            }
-            
-            guard
-                let decodedUserList = try? JSONDecoder().decode([User].self, from: data)
-            else {
-                completion([], .serverError)
-                return
-            }
-            
-            print("Users data downloaded!")
-            completion(decodedUserList, nil)
-        }.resume()
+        print("Users data downloaded!")
+        return decodedUserList
     }
     
-    func downloadProfile(username: String, completion: @escaping (Profile?, ServiceError?) -> Void) {
+    func downloadProfile(username: String) async -> Result<Profile?, ServiceError> {
+        await withCheckedContinuation { continuation in
+            downloadProfile(username: username) { profile, error in
+                if let error {
+                    continuation.resume(returning: .failure(error))
+                } else {
+                    continuation.resume(returning: .success(profile))
+                }
+            }
+        }
+    }
+    
+    private func downloadProfile(username: String, completion: @escaping (Profile?, ServiceError?) -> Void) {
         guard let url = DownloadURL.profieURL(username).url else { return }
         
         let urlRequest = URLRequest(url: url)

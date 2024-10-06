@@ -7,7 +7,7 @@
 
 
 protocol UsersDownloadService {
-    func downloadUsers(completion: @escaping ([User], ServiceError?) -> Void)
+    func downloadUsers() async throws -> [User]
 }
 
 protocol UsersDelegate {
@@ -29,15 +29,17 @@ final class UsersViewModel {
         self.delegate = delegate
     }
     
-    func prepareUsers() {
-        downloadService.downloadUsers { [weak self] users, error in
-            guard let error else {
-                self?.users = users
-                self?.delegate.reloadUsers()
+    func prepareUsers() async {
+        do {
+            users = try await downloadService.downloadUsers()
+            delegate.reloadUsers()
+        } catch {
+            guard let error = error as? ServiceError else {
+                print("Unknown error: \(error)")
+                delegate.showError(for: .networkError)
                 return
             }
-            
-            self?.delegate.showError(for: error)
+            delegate.showError(for: error)
         }
     }
 }

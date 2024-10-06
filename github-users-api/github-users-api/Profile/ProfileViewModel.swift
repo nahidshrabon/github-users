@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ProfileDownloadService {
-    func downloadProfile(username: String, completion: @escaping (Profile?, ServiceError?) -> Void)
+    func downloadProfile(username: String) async -> Result<Profile?, ServiceError>
     func downloadImage(for rawURL: String, completion: @escaping (String, UIImage) -> Void)
 }
 
@@ -46,7 +46,7 @@ extension ProfileViewModel {
     
     var public_repos: Int? { profile?.public_repos }
     
-    func prepareProfile() {
+    func prepareProfile() async {
         if let avatarURL = user.avatar_url {
             downloadService.downloadImage(for: avatarURL) { [weak self] responseURL, image in
                 self?.delegate?.reloadProfileImage(with: image)
@@ -54,14 +54,13 @@ extension ProfileViewModel {
         }
         
         if let username = user.login {
-            downloadService.downloadProfile(username: username) { [weak self] profile, error in
-                if let error {
-                    self?.delegate?.showError(for: error)
-                    return
-                }
-                
-                self?.profile = profile
-                self?.delegate?.reloadProfileInfo()
+            let result = await downloadService.downloadProfile(username: username)
+            switch result {
+            case .success(let profile):
+                self.profile = profile
+                self.delegate?.reloadProfileInfo()
+            case .failure(let error):
+                self.delegate?.showError(for: error)
             }
         }
     }
